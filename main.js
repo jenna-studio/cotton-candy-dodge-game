@@ -19,7 +19,7 @@ let currentExp = 0;
 let maxExp = 100;
 let accuracyBonus = 0;
 let scoreMultiplier = 1.0;
-let shieldCharges = 0;
+let shieldCharges = 1;
 let isShielded = false;
 let totalBoxesAvoided = 0;
 
@@ -41,15 +41,14 @@ function initAudioSystem() {
         collisionSound = createCollisionSound();
         levelUpSound = createLevelUpSound();
         shieldSound = createShieldSound();
-
     } catch (error) {
-        console.log('Audio not supported');
+        console.log("Audio not supported");
     }
 }
 
 function createBackgroundMusic() {
     // 8비트 스타일 배경음악 생성
-    const notes = [261.63, 293.66, 329.63, 349.23, 392.00, 440.00, 493.88, 523.25]; // C4-C5
+    const notes = [261.63, 293.66, 329.63, 349.23, 392.0, 440.0, 493.88, 523.25]; // C4-C5
     const melody = [0, 2, 4, 2, 0, 2, 4, 2, 4, 5, 7, 4, 5, 7];
     let noteIndex = 0;
     let musicInterval;
@@ -68,7 +67,7 @@ function createBackgroundMusic() {
             if (musicInterval) {
                 clearInterval(musicInterval);
             }
-        }
+        },
     };
 }
 
@@ -89,7 +88,7 @@ function createCollisionSound() {
         gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
         gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
 
-        oscillator.type = 'sawtooth';
+        oscillator.type = "sawtooth";
         oscillator.start(audioContext.currentTime);
         oscillator.stop(audioContext.currentTime + 0.3);
     };
@@ -100,7 +99,7 @@ function createLevelUpSound() {
         if (!sfxEnabled || !audioContext) return;
 
         // 레벨업음: 상승하는 아르페지오
-        const notes = [261.63, 329.63, 392.00, 523.25];
+        const notes = [261.63, 329.63, 392.0, 523.25];
         notes.forEach((freq, index) => {
             setTimeout(() => {
                 playTone(freq, 0.2, 0.15);
@@ -127,7 +126,7 @@ function createShieldSound() {
         gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
         gainNode.gain.setValueAtTime(0.01, audioContext.currentTime + 0.3);
 
-        oscillator.type = 'square';
+        oscillator.type = "square";
         oscillator.start(audioContext.currentTime);
         oscillator.stop(audioContext.currentTime + 0.3);
     };
@@ -146,21 +145,21 @@ function playTone(frequency, volume, duration) {
     gainNode.gain.setValueAtTime(volume, audioContext.currentTime);
     gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
 
-    oscillator.type = 'square';
+    oscillator.type = "square";
     oscillator.start(audioContext.currentTime);
     oscillator.stop(audioContext.currentTime + duration);
 }
 
 // 사운드 컨트롤 버튼 이벤트
 function initSoundControls() {
-    const pauseBtn = document.getElementById('pauseBtn');
-    const musicBtn = document.getElementById('musicBtn');
-    const sfxBtn = document.getElementById('sfxBtn');
+    const pauseBtn = document.getElementById("pauseBtn");
+    const musicBtn = document.getElementById("musicBtn");
+    const sfxBtn = document.getElementById("sfxBtn");
 
-    pauseBtn.addEventListener('click', () => {
+    pauseBtn.addEventListener("click", () => {
         isPaused = !isPaused;
-        pauseBtn.textContent = isPaused ? '▶️' : '⏸️';
-        
+        pauseBtn.textContent = isPaused ? "▶️" : "⏸️";
+
         if (isPaused) {
             if (bgMusic && musicEnabled) {
                 bgMusic.stop();
@@ -172,10 +171,10 @@ function initSoundControls() {
         }
     });
 
-    musicBtn.addEventListener('click', () => {
+    musicBtn.addEventListener("click", () => {
         musicEnabled = !musicEnabled;
-        musicBtn.classList.toggle('muted', !musicEnabled);
-        musicBtn.textContent = musicEnabled ? '🎵' : '🔇';
+        musicBtn.classList.toggle("muted", !musicEnabled);
+        musicBtn.textContent = musicEnabled ? "🎧" : "🔇";
 
         if (musicEnabled) {
             bgMusic.play();
@@ -184,37 +183,39 @@ function initSoundControls() {
         }
     });
 
-    sfxBtn.addEventListener('click', () => {
+    sfxBtn.addEventListener("click", () => {
         sfxEnabled = !sfxEnabled;
-        sfxBtn.classList.toggle('muted', !sfxEnabled);
-        sfxBtn.textContent = sfxEnabled ? '🔊' : '🔇';
+        sfxBtn.classList.toggle("muted", !sfxEnabled);
+        sfxBtn.textContent = sfxEnabled ? "🔊" : "🔇";
     });
 }
 
 // 충돌 이펙트 생성
 function createCollisionEffect(x, y) {
     // 메인 폭발 이펙트
-    const explosion = document.createElement('div');
-    explosion.className = 'collision-effect';
-    explosion.style.left = (x - 50) + 'px';
-    explosion.style.top = (y - 50) + 'px';
+    const explosion = document.createElement("div");
+    explosion.className = "collision-effect";
+    explosion.style.left = x - 50 + "px";
+    explosion.style.top = y - 50 + "px";
     game.appendChild(explosion);
 
     // 파티클 이펙트
     for (let i = 0; i < 12; i++) {
-        const particle = document.createElement('div');
-        particle.className = 'particle-effect';
+        const particle = document.createElement("div");
+        particle.className = "particle-effect";
 
         const angle = (i / 12) * Math.PI * 2;
         const distance = 50 + Math.random() * 30;
         const dx = Math.cos(angle) * distance;
         const dy = Math.sin(angle) * distance;
 
-        particle.style.left = x + 'px';
-        particle.style.top = y + 'px';
-        particle.style.setProperty('--dx', dx + 'px');
-        particle.style.setProperty('--dy', dy + 'px');
-        particle.style.background = ['#ff006e', '#8338ec', '#3a86ff', '#06ffa5', '#ffbe0b'][Math.floor(Math.random() * 5)];
+        particle.style.left = x + "px";
+        particle.style.top = y + "px";
+        particle.style.setProperty("--dx", dx + "px");
+        particle.style.setProperty("--dy", dy + "px");
+        particle.style.background = ["#ff006e", "#8338ec", "#3a86ff", "#06ffa5", "#ffbe0b"][
+            Math.floor(Math.random() * 5)
+        ];
 
         game.appendChild(particle);
 
@@ -224,9 +225,9 @@ function createCollisionEffect(x, y) {
     }
 
     // 화면 흔들림 효과
-    document.body.classList.add('screen-shake');
+    document.body.classList.add("screen-shake");
     setTimeout(() => {
-        document.body.classList.remove('screen-shake');
+        document.body.classList.remove("screen-shake");
     }, 500);
 
     setTimeout(() => {
@@ -236,17 +237,17 @@ function createCollisionEffect(x, y) {
 
 // 레벨 시스템 함수들
 function updateLevelDisplay() {
-    document.getElementById('currentLevel').textContent = playerLevel;
-    document.getElementById('level').textContent = playerLevel;
-    document.getElementById('currentExp').textContent = currentExp;
-    document.getElementById('maxExp').textContent = maxExp;
-    document.getElementById('accuracyBonus').textContent = accuracyBonus;
-    document.getElementById('scoreMultiplier').textContent = scoreMultiplier.toFixed(1);
-    document.getElementById('shieldCharges').textContent = shieldCharges;
+    document.getElementById("currentLevel").textContent = playerLevel;
+    document.getElementById("level").textContent = playerLevel;
+    document.getElementById("currentExp").textContent = currentExp;
+    document.getElementById("maxExp").textContent = maxExp;
+    document.getElementById("accuracyBonus").textContent = accuracyBonus;
+    document.getElementById("scoreMultiplier").textContent = scoreMultiplier.toFixed(1);
+    document.getElementById("shieldCharges").textContent = shieldCharges;
 
     // EXP 바 업데이트
     const expPercentage = (currentExp / maxExp) * 100;
-    document.getElementById('expFill').style.width = expPercentage + '%';
+    document.getElementById("expFill").style.width = expPercentage + "%";
 }
 
 function gainExp(amount) {
@@ -275,10 +276,10 @@ function levelUp() {
     }
 
     // 레벨업 애니메이션
-    const levelSystem = document.getElementById('levelSystem');
-    levelSystem.classList.add('level-up');
+    const levelSystem = document.getElementById("levelSystem");
+    levelSystem.classList.add("level-up");
     setTimeout(() => {
-        levelSystem.classList.remove('level-up');
+        levelSystem.classList.remove("level-up");
     }, 1000);
 
     // 레벨업 알림
@@ -289,7 +290,7 @@ function levelUp() {
 
 function showLevelUpNotification() {
     // 레벨업 알림 생성
-    const notification = document.createElement('div');
+    const notification = document.createElement("div");
     notification.style.cssText = `
         position: fixed;
         top: 50%;
@@ -313,7 +314,7 @@ function showLevelUpNotification() {
         Level ${playerLevel}<br>
         +5% Accuracy Bonus<br>
         +0.2x Score Multiplier
-        ${playerLevel % 3 === 0 ? '<br>+1 Shield Charge!' : ''}
+        ${playerLevel % 3 === 0 ? "<br>+1 Shield Charge!" : ""}
         </div>
         `;
 
@@ -325,7 +326,7 @@ function showLevelUpNotification() {
     }, 3000);
 
     // 레벨업 애니메이션 CSS 추가
-    const style = document.createElement('style');
+    const style = document.createElement("style");
     style.textContent = `
         @keyframes levelUpNotification {
         0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
@@ -342,13 +343,16 @@ function useShield() {
         shieldCharges--;
         isShielded = true;
 
+        // 실드 사운드 재생
+        if (shieldSound) shieldSound();
+
         // 실드 시각 효과
-        player.classList.add('player-shielded');
+        player.classList.add("player-shielded");
 
         // 5초 후 실드 해제
         setTimeout(() => {
             isShielded = false;
-            player.classList.remove('player-shielded');
+            player.classList.remove("player-shielded");
         }, 5000);
 
         updateLevelDisplay();
@@ -359,7 +363,7 @@ function useShield() {
 }
 
 function showShieldNotification() {
-    const notification = document.createElement('div');
+    const notification = document.createElement("div");
     notification.style.cssText = `
         position: fixed;
         top: 20%;
@@ -386,7 +390,7 @@ function showShieldNotification() {
     }, 2000);
 
     // 실드 알림 애니메이션 CSS 추가
-    const style = document.createElement('style');
+    const style = document.createElement("style");
     style.textContent = `
         @keyframes shieldNotification {
         0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
@@ -409,7 +413,7 @@ document.addEventListener("keydown", (e) => {
 });
 
 function loadRankings() {
-    const rankings = localStorage.getItem('cottonCandyRankings');
+    const rankings = localStorage.getItem("cottonCandyRankings");
     if (rankings) {
         return JSON.parse(rankings);
     }
@@ -417,23 +421,23 @@ function loadRankings() {
 }
 
 function saveRankings(rankings) {
-    localStorage.setItem('cottonCandyRankings', JSON.stringify(rankings));
+    localStorage.setItem("cottonCandyRankings", JSON.stringify(rankings));
 }
 
 function updateRankingDisplay() {
     const rankings = loadRankings();
-    const rankingItems = document.querySelectorAll('.rank-item');
+    const rankingItems = document.querySelectorAll(".rank-item");
 
     for (let i = 0; i < 10; i++) {
-        const nameSpan = rankingItems[i].querySelector('.rank-name');
-        const scoreSpan = rankingItems[i].querySelector('.rank-score');
+        const nameSpan = rankingItems[i].querySelector(".rank-name");
+        const scoreSpan = rankingItems[i].querySelector(".rank-score");
 
         if (rankings[i]) {
             nameSpan.textContent = rankings[i].name;
             scoreSpan.textContent = rankings[i].score;
         } else {
-            nameSpan.textContent = '---';
-            scoreSpan.textContent = '0';
+            nameSpan.textContent = "---";
+            scoreSpan.textContent = "0";
         }
     }
 }
@@ -454,7 +458,7 @@ function addToRanking(playerName, playerScore) {
     updateRankingDisplay();
 
     // 순위 확인
-    const rank = rankings.findIndex(r => r.name === playerName && r.score === playerScore) + 1;
+    const rank = rankings.findIndex((r) => r.name === playerName && r.score === playerScore) + 1;
     return rank <= 10 ? rank : null;
 }
 
@@ -469,55 +473,55 @@ updateLevelDisplay();
 
 // 모바일 터치 컨트롤 초기화
 function initMobileControls() {
-    const leftBtn = document.getElementById('leftBtn');
-    const rightBtn = document.getElementById('rightBtn');
-    const mobileShieldBtn = document.getElementById('shieldBtn');
+    const leftBtn = document.getElementById("leftBtn");
+    const rightBtn = document.getElementById("rightBtn");
+    const mobileShieldBtn = document.getElementById("shieldBtn");
 
     // 터치 버튼 컨트롤
     if (leftBtn) {
-        leftBtn.addEventListener('touchstart', (e) => {
+        leftBtn.addEventListener("touchstart", (e) => {
             e.preventDefault();
             moveLeft = true;
         });
-        leftBtn.addEventListener('touchend', (e) => {
+        leftBtn.addEventListener("touchend", (e) => {
             e.preventDefault();
             moveLeft = false;
         });
-        leftBtn.addEventListener('mousedown', (e) => {
+        leftBtn.addEventListener("mousedown", (e) => {
             e.preventDefault();
             moveLeft = true;
         });
-        leftBtn.addEventListener('mouseup', (e) => {
+        leftBtn.addEventListener("mouseup", (e) => {
             e.preventDefault();
             moveLeft = false;
         });
     }
 
     if (rightBtn) {
-        rightBtn.addEventListener('touchstart', (e) => {
+        rightBtn.addEventListener("touchstart", (e) => {
             e.preventDefault();
             moveRight = true;
         });
-        rightBtn.addEventListener('touchend', (e) => {
+        rightBtn.addEventListener("touchend", (e) => {
             e.preventDefault();
             moveRight = false;
         });
-        rightBtn.addEventListener('mousedown', (e) => {
+        rightBtn.addEventListener("mousedown", (e) => {
             e.preventDefault();
             moveRight = true;
         });
-        rightBtn.addEventListener('mouseup', (e) => {
+        rightBtn.addEventListener("mouseup", (e) => {
             e.preventDefault();
             moveRight = false;
         });
     }
 
     if (mobileShieldBtn) {
-        mobileShieldBtn.addEventListener('touchstart', (e) => {
+        mobileShieldBtn.addEventListener("touchstart", (e) => {
             e.preventDefault();
             useShield();
         });
-        mobileShieldBtn.addEventListener('click', (e) => {
+        mobileShieldBtn.addEventListener("click", (e) => {
             e.preventDefault();
             useShield();
         });
@@ -527,45 +531,45 @@ function initMobileControls() {
     let touchStartX = 0;
     let touchStartY = 0;
 
-    game.addEventListener('touchstart', (e) => {
+    game.addEventListener("touchstart", (e) => {
         touchStartX = e.touches[0].clientX;
         touchStartY = e.touches[0].clientY;
     });
 
-    game.addEventListener('touchend', (e) => {
+    game.addEventListener("touchend", (e) => {
         if (!touchStartX || !touchStartY) return;
-        
+
         const touchEndX = e.changedTouches[0].clientX;
         const touchEndY = e.changedTouches[0].clientY;
-        
+
         const deltaX = touchEndX - touchStartX;
         const deltaY = touchEndY - touchStartY;
-        
+
         // 최소 스와이프 거리
         const minSwipeDistance = 30;
-        
+
         if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > minSwipeDistance) {
             // 좌우 스와이프
             if (deltaX > 0) {
                 // 오른쪽 스와이프
                 moveRight = true;
-                setTimeout(() => moveRight = false, 200);
+                setTimeout(() => (moveRight = false), 200);
             } else {
                 // 왼쪽 스와이프
                 moveLeft = true;
-                setTimeout(() => moveLeft = false, 200);
+                setTimeout(() => (moveLeft = false), 200);
             }
         } else if (Math.abs(deltaY) > minSwipeDistance) {
             // 상하 스와이프 - 실드 사용
             useShield();
         }
-        
+
         touchStartX = 0;
         touchStartY = 0;
     });
 
     // 게임 영역 탭으로 실드 사용
-    game.addEventListener('touchstart', (e) => {
+    game.addEventListener("touchstart", (e) => {
         if (e.touches.length === 2) {
             // 두 손가락 탭으로 실드 사용
             e.preventDefault();
@@ -574,20 +578,40 @@ function initMobileControls() {
     });
 }
 
-// 사운드 시스템 초기화
-document.addEventListener('click', function initAudio() {
-    initAudioSystem();
-    initSoundControls();
-    initMobileControls();
+// 사운드 시스템 초기화 - 자동 활성화
+document.addEventListener(
+    "click",
+    function initAudio() {
+        // 사운드 자동 활성화
+        musicEnabled = true;
+        sfxEnabled = true;
+        
+        initAudioSystem();
+        initSoundControls();
+        initMobileControls();
 
-    // 배경음악 시작
-    if (bgMusic && musicEnabled) {
-        bgMusic.play();
-    }
+        // UI 버튼 상태 업데이트
+        const musicBtn = document.getElementById("musicBtn");
+        const sfxBtn = document.getElementById("sfxBtn");
+        if (musicBtn) {
+            musicBtn.textContent = "🎧";
+            musicBtn.classList.remove("muted");
+        }
+        if (sfxBtn) {
+            sfxBtn.textContent = "🔊";
+            sfxBtn.classList.remove("muted");
+        }
 
-    // 한 번만 실행되도록 이벤트 리스너 제거
-    document.removeEventListener('click', initAudio);
-}, { once: true });
+        // 배경음악 시작
+        if (bgMusic && musicEnabled) {
+            bgMusic.play();
+        }
+
+        // 한 번만 실행되도록 이벤트 리스너 제거
+        document.removeEventListener("click", initAudio);
+    },
+    { once: true }
+);
 
 document.addEventListener("keydown", (e) => {
     if (e.key === "ArrowLeft") moveLeft = true;
@@ -599,9 +623,9 @@ document.addEventListener("keydown", (e) => {
     if (e.key === "p" || e.key === "P" || e.key === "Escape") {
         e.preventDefault();
         isPaused = !isPaused;
-        const pauseBtn = document.getElementById('pauseBtn');
-        pauseBtn.textContent = isPaused ? '▶️' : '⏸️';
-        
+        const pauseBtn = document.getElementById("pauseBtn");
+        pauseBtn.textContent = isPaused ? "▶️" : "⏸️";
+
         if (isPaused) {
             if (bgMusic && musicEnabled) {
                 bgMusic.stop();
@@ -639,7 +663,7 @@ function createBox() {
     // Random size variations - adjust based on game area size
     const gameWidth = game.clientWidth;
     let sizes;
-    
+
     if (gameWidth >= 550) {
         // iPad Mini dimensions - larger boxes
         sizes = [40, 45, 50, 55, 60];
@@ -650,7 +674,7 @@ function createBox() {
         // Mobile dimensions
         sizes = [30, 35, 40, 45, 50];
     }
-    
+
     const randomSize = sizes[Math.floor(Math.random() * sizes.length)];
     box.style.width = randomSize + "px";
     box.style.height = randomSize + "px";
@@ -693,7 +717,7 @@ function createBox() {
         // Solid colors with texture
         "linear-gradient(45deg, #ff006e 25%, transparent 25%), linear-gradient(-45deg, #8338ec 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #3a86ff 75%), linear-gradient(-45deg, transparent 75%, #06ffa5 75%)",
         "repeating-linear-gradient(0deg, #ffbe0b, #ffbe0b 2px, #fb5607 2px, #fb5607 4px)",
-        "repeating-linear-gradient(60deg, #c77dff, #c77dff 3px, #7209b7 3px, #7209b7 6px)"
+        "repeating-linear-gradient(60deg, #c77dff, #c77dff 3px, #7209b7 3px, #7209b7 6px)",
     ];
 
     const randomPattern = patterns[Math.floor(Math.random() * patterns.length)];
@@ -706,7 +730,7 @@ function createBox() {
     // Random animation speed and style
     const animationTypes = ["spin", "wobble", "pulse", "shake"];
     const randomAnimation = animationTypes[Math.floor(Math.random() * animationTypes.length)];
-    const animationSpeed = (Math.random() * 2 + 1) + "s"; // 1-3 seconds
+    const animationSpeed = Math.random() * 2 + 1 + "s"; // 1-3 seconds
 
     switch (randomAnimation) {
         case "wobble":
@@ -728,11 +752,11 @@ function createBox() {
     // 시작부터 빠른 낙하 속도, 시간에 따라 더욱 증가
     let baseFallSpeed;
     if (time < 8) {
-        baseFallSpeed = 2.5 + (time * 0.25); // 2.5에서 4.5로
+        baseFallSpeed = 2.5 + time * 0.25; // 2.5에서 4.5로
     } else if (time < 16) {
-        baseFallSpeed = 4.5 + ((time - 8) * 0.5); // 4.5에서 8.5로
+        baseFallSpeed = 4.5 + (time - 8) * 0.5; // 4.5에서 8.5로
     } else {
-        baseFallSpeed = 8.5 + ((time - 16) * 0.3); // 8.5에서 계속 증가
+        baseFallSpeed = 8.5 + (time - 16) * 0.3; // 8.5에서 계속 증가
     }
 
     // 랜덤 편차 추가 (±40%)
@@ -745,7 +769,7 @@ function createBox() {
             box.remove();
             return;
         }
-        
+
         if (isPaused) return;
 
         boxY += finalFallSpeed;
@@ -794,18 +818,52 @@ function createBox() {
 
             // 하이스코어 체크
             if (isHighScore(score)) {
-                const playerName = prompt("🎉 NEW HIGH SCORE! 🎉\n🌈 Your cotton candy survived " + time + " seconds!\n💎 Final Score: " + score + " (Level " + playerLevel + ")\n\n🏆 Enter your name for the leaderboard:");
+                const playerName = prompt(
+                    "🎉 NEW HIGH SCORE! 🎉\n🌈 Your cotton candy survived " +
+                        time +
+                        " seconds!\n💎 Final Score: " +
+                        score +
+                        " (Level " +
+                        playerLevel +
+                        ")\n\n🏆 Enter your name for the leaderboard:"
+                );
 
                 if (playerName && playerName.trim()) {
                     const rank = addToRanking(playerName.trim().substring(0, 12), score); // 이름 12자 제한
                     if (rank) {
-                        alert("🏆 CONGRATULATIONS! 🏆\n🎮 You ranked #" + rank + " on the leaderboard!\n🍭 Player: " + playerName.trim() + "\n🌈 Score: " + score + "\n⏰ Time: " + time + "s\n⭐ Level: " + playerLevel);
+                        alert(
+                            "🏆 CONGRATULATIONS! 🏆\n🎮 You ranked #" +
+                                rank +
+                                " on the leaderboard!\n🍭 Player: " +
+                                playerName.trim() +
+                                "\n🌈 Score: " +
+                                score +
+                                "\n⏰ Time: " +
+                                time +
+                                "s\n⭐ Level: " +
+                                playerLevel
+                        );
                     }
                 } else {
-                    alert("🌈💥 PIXEL CRASH! Your cotton candy exploded into rainbow bits! 🍭✨\nFINAL SCORE: " + score + " 🎮\nTIME SURVIVED: " + time + "s\nLEVEL REACHED: " + playerLevel);
+                    alert(
+                        "🌈💥 PIXEL CRASH! Your cotton candy exploded into rainbow bits! 🍭✨\nFINAL SCORE: " +
+                            score +
+                            " 🎮\nTIME SURVIVED: " +
+                            time +
+                            "s\nLEVEL REACHED: " +
+                            playerLevel
+                    );
                 }
             } else {
-                alert("🌈💥 PIXEL CRASH! Your cotton candy exploded into rainbow bits! 🍭✨\nFINAL SCORE: " + score + " 🎮\nTIME SURVIVED: " + time + "s\nLEVEL REACHED: " + playerLevel + "\n\n🎯 Keep trying to reach the leaderboard!");
+                alert(
+                    "🌈💥 PIXEL CRASH! Your cotton candy exploded into rainbow bits! 🍭✨\nFINAL SCORE: " +
+                        score +
+                        " 🎮\nTIME SURVIVED: " +
+                        time +
+                        "s\nLEVEL REACHED: " +
+                        playerLevel +
+                        "\n\n🎯 Keep trying to reach the leaderboard!"
+                );
             }
 
             setTimeout(() => location.reload(), 1000);
@@ -859,13 +917,13 @@ function scheduleNextBox() {
     // 시작: 800ms, 5초 후: 400ms, 10초 후: 200ms, 15초 후: 100ms, 20초+ : 50ms
     let baseInterval;
     if (time < 5) {
-        baseInterval = 800 - (time * 80); // 800ms에서 400ms로 (매초 80ms 감소)
+        baseInterval = 800 - time * 80; // 800ms에서 400ms로 (매초 80ms 감소)
     } else if (time < 10) {
-        baseInterval = 400 - ((time - 5) * 40); // 400ms에서 200ms로 (매초 40ms 감소)
+        baseInterval = 400 - (time - 5) * 40; // 400ms에서 200ms로 (매초 40ms 감소)
     } else if (time < 15) {
-        baseInterval = 200 - ((time - 10) * 20); // 200ms에서 100ms로 (매초 20ms 감소)
+        baseInterval = 200 - (time - 10) * 20; // 200ms에서 100ms로 (매초 20ms 감소)
     } else if (time < 20) {
-        baseInterval = 100 - ((time - 15) * 10); // 100ms에서 50ms로 (매초 10ms 감소)
+        baseInterval = 100 - (time - 15) * 10; // 100ms에서 50ms로 (매초 10ms 감소)
     } else {
         baseInterval = 50; // 최대 속도 (매우 빠름)
     }
