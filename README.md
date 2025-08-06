@@ -1,4 +1,4 @@
-# 🍭 Cotton Candy Dodge Game
+# 🍭 Cotton Candy Dodge
 
 ![demo-video](cotton-candy-dodge-demo.gif)
 
@@ -77,4 +77,4 @@
 
 ---
 
-*Play now at: https://jenna-studio.github.io/cotton-candy-dodge-game/*
+*Play now at: https://jenna-studio.github.io/cotton-candy-dodge/*
