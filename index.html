@@ -40,6 +40,23 @@
                 </div>
             </div>
 
+            <!-- 난이도 선택 -->
+            <div class="info-box">
+                <div class="info-box-title" style="color: #ff006e;">⚡ DIFFICULTY</div>
+                <div class="difficulty-selector">
+                    <button class="difficulty-btn" data-difficulty="easy">🟢 EASY</button>
+                    <button class="difficulty-btn active" data-difficulty="normal">🟡 NORMAL</button>
+                    <button class="difficulty-btn" data-difficulty="hard">🔴 HARD</button>
+                    <button class="difficulty-btn" data-difficulty="insane">💀 INSANE</button>
+                </div>
+                <div class="difficulty-info" id="difficultyInfo">
+                    <div style="font-size: 8px; margin-top: 5px;">
+                        Selected: <span id="selectedDifficulty">EASY</span><br>
+                        Spawn Rate: +50% | Speed: -30% | Score: -20%
+                    </div>
+                </div>
+            </div>
+
             <!-- 조작법 안내 -->
             <div class="info-box">
                 <div class="info-box-title" style="color: #ffd700;">🎮 CONTROLS</div>
@@ -59,6 +76,7 @@
                 <button class="sound-btn" id="pauseBtn" title="Pause/Resume Game">⏸️</button>
                 <button class="sound-btn" id="musicBtn" title="Toggle Music">🎧</button>
                 <button class="sound-btn" id="sfxBtn" title="Toggle Sound Effects">🔊</button>
+                <button class="sound-btn" id="shareBtn" title="Share Your Score">🔗</button>
             </div>
         </div>
 
@@ -164,6 +182,78 @@
                         <li>Aim for the leaderboard!</li>
                     </ul>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Share Modal -->
+    <div id="shareModal" class="share-modal" style="display: none;">
+        <div class="share-modal-content">
+            <div class="share-header">
+                <h3>🎮 Share Your Achievement! 🏆</h3>
+                <button class="close-btn" id="closeShareModal">×</button>
+            </div>
+
+            <div class="share-stats">
+                <div class="share-stat">
+                    <div class="stat-left">
+                        <span class="stat-icon">🌈</span>
+                        <span class="stat-label">Score</span>
+                    </div>
+                    <span class="stat-value" id="shareScore">0</span>
+                </div>
+                <div class="share-stat">
+                    <div class="stat-left">
+                        <span class="stat-icon">⭐</span>
+                        <span class="stat-label">Level</span>
+                    </div>
+                    <span class="stat-value" id="shareLevel">1</span>
+                </div>
+                <div class="share-stat">
+                    <div class="stat-left">
+                        <span class="stat-icon">⏰</span>
+                        <span class="stat-label">Time</span>
+                    </div>
+                    <span class="stat-value" id="shareTime">0s</span>
+                </div>
+                <div class="share-stat">
+                    <div class="stat-left">
+                        <span class="stat-icon">⚡</span>
+                        <span class="stat-label">Difficulty</span>
+                    </div>
+                    <span class="stat-value" id="shareDifficulty">Normal</span>
+                </div>
+            </div>
+
+            <div class="game-link-section">
+                <label for="gameLink">🎮 Game Link:</label>
+                <div class="game-link-container">
+                    <input type="text" id="gameLink" readonly>
+                    <button class="copy-game-link-btn" id="copyGameLink">📋</button>
+                </div>
+            </div>
+
+            <div class="share-buttons">
+                <button class="share-btn twitter-btn" id="shareTwitter">
+                    <span>X (Twitter)</span>
+                </button>
+                <button class="share-btn instagram-btn" id="shareInstagram">
+                    <span>Instagram</span>
+                </button>
+                <button class="share-btn facebook-btn" id="shareFacebook">
+                    <span>Facebook</span>
+                </button>
+                <button class="share-btn threads-btn" id="shareThreads">
+                    <span>Threads</span>
+                </button>
+                <button class="share-btn copy-btn" id="copyLink">
+                    <span>Copy Message</span>
+                </button>
+            </div>
+
+            <div class="share-message">
+                <label for="shareText">Custom Message:</label>
+                <textarea id="shareText" placeholder="Add your own message..."></textarea>
             </div>
         </div>
     </div>
